@@ -22,16 +22,28 @@
 
 set -euo pipefail
 
+set -- "${1:-'https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf'}"
+
 # source configuration
 source $(dirname ${0})/config.cfg
 
 echo "Started processing at $(date)"
 
+if [[ $1 == http* ]]; then
 echo "[1/3] Downloading planet file"
-wget -O $PLANET_FILE https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
+wget -O $PLANET_FILE $1
+else
+echo "[1/3] NOT downloading planet file"
+PLANET_FILE=$1
+fi
 
+if [[ $PLANET_FILE == *railway* ]]; then
+echo "[2/3] NOT filtering data extract"
+PLANET_FILTERED=$PLANET_FILE
+else
 echo "[2/3] Filtering data extract"
 $OSMIUM tags-filter -o $PLANET_FILTERED $PLANET_FILE $OSMIUM_FILTER_EXPR
+fi
 
 echo "[3/3] Import data into database"
 if [[ -v "$OSM2PGSQL_FLATNODES" ]]; then
