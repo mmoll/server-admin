@@ -155,6 +155,7 @@
       dest: /var/www/tiles
       repo: https://github.com/geofabrik/tileserver-demosite.git
       version: 5571bb913905fba6def4eb194efdc80d4620cc42
+    when: not tileserver.dev_setup
 
   - name: Configure demonstration page
     copy:

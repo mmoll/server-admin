@@ -19,6 +19,7 @@
       mode: 0700
       state: directory
     register: postgres_directory
+    when: not tileserver.dev_setup
 
   - name: Install helpful packages for map style debugging
     when: tileserver.development_tools
@@ -37,6 +38,7 @@
       name: nvme
       owner: postgres
       location: /nvme/postgresql
+    when: not tileserver.dev_setup
 
   - name: Create system user osmimport
     user:
@@ -119,12 +121,14 @@
       owner: root
       group: root
       state: directory
+    when: not tileserver.dev_setup
 
   - name: Clone server-admin repository
     git:
       dest: '{{ tileserver_script_dir }}'
       repo: https://github.com/OpenRailwayMap/server-admin.git
       version: 9ee06654bb2a9442e1dc71116f8fd958fd5066cd
+    when: not tileserver.dev_setup
 
   - name: Write Systemd Unit file for update-data
     copy:
@@ -147,6 +151,7 @@
         StandardError=journal
         SyslogIdentifier=update_osm
         Nice=+1
+    when: not tileserver.dev_setup
     notify:
       - systemd daemon-reload
 
@@ -166,6 +171,7 @@
 
         [Install]
         WantedBy=default.target
+    when: not tileserver.dev_setup
     notify:
       - systemd daemon-reload
 
@@ -179,12 +185,14 @@
       owner: root
       group: root
       state: directory
+    when: not tileserver.dev_setup
 
   - name: Clone CartoCSS map style repository
     git:
       dest: '{{ cartocss_dir }}'
       repo: https://github.com/OpenRailwayMap/OpenRailwayMap-CartoCSS.git
       version: dbd054a43fa95eb08574a75e4cd15f2226996a50
+    when: not tileserver.dev_setup
 
   - debug: {msg: 'Please build the map styles manually using Carto and run the OSM data import script. Then continue with the playbook for step 2.'}
 

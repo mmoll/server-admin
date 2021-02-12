@@ -21,6 +21,7 @@
       # We need to call it with force:yes because our database layout requires to overwrite api/config.json
       force: yes
       version: master
+    when: not tileserver.dev_setup
 
   - name: Enable/Disable Apache modules
     apache2_module:
