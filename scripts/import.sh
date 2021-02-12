@@ -51,7 +51,7 @@ if [[ -v "$OSM2PGSQL_FLATNODES" ]]; then
 else
     FLATNODES_OPTION=""
 fi
-$OSM2PGSQL -d $DATABASE_NAME --merc --multi-geometry --hstore --style $OSM2PGSQL_STYLE --tag-transform $OSM2PGSQL_LUA --cache 12000 --slim $FLATNODES_OPTION $PLANET_FILTERED
+$OSM2PGSQL -d $DATABASE_NAME --merc --multi-geometry --hstore --style $OSM2PGSQL_STYLE --tag-transform $OSM2PGSQL_LUA --cache 2000 --slim $FLATNODES_OPTION $PLANET_FILTERED
 
 REPLICATION_TIMESTAMP=$($OSMIUM fileinfo -g header.option.osmosis_replication_timestamp $PLANET_FILE)
 echo "replication timestamp is $REPLICATION_TIMESTAMP"

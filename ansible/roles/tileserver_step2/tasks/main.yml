@@ -87,9 +87,9 @@
     apt:
       deb: '{{ item }}'
     loop:
-      - '/root/packages/tirex-core_0.6.1_amd64.deb'
-      - '/root/packages/tirex-backend-mapnik_0.6.1_amd64.deb'
-      - '/root/packages/libapache2-mod-tile_0.4-12~precise2_amd64.deb'
+      - '/root/packages/tirex-core_0.6.3_amd64.deb'
+      - '/root/packages/tirex-backend-mapnik_0.6.3_amd64.deb'
+#      - '/root/packages/libapache2-mod-tile_0.4-12~precise2_amd64.deb'
     notify:
       # Tirex and Apache are only restarted/reloaded if Ansible had to change something on the remote host (i.e. we install new package)
       - systemd reload apache2
@@ -170,12 +170,12 @@
       chdir: /var/www/tiles
       target: all
 
-  - name: Deactivate default tileserver page
-    shell:
-      cmd: a2dissite tileserver_site.conf
-      chdir: /etc/apache2/sites-available
-    notify:
-      - systemd reload apache2
+#  - name: Deactivate default tileserver page
+#    shell:
+#      cmd: a2dissite tileserver_site.conf
+#      chdir: /etc/apache2/sites-available
+#    notify:
+#      - systemd reload apache2
 
   - name: Ensure that files included by Apache configuration are present
     when: "'letsencrypt' in group_names"
@@ -266,6 +266,7 @@
       name: update-data.timer
       enabled: yes
       state: started
+    when: not tileserver.dev_setup
 
   - debug: {msg: 'Tirex is ready to render tiles now. Please start bulk-rendering of tiles on zoom levels 0 to 12 using the following command:\ntirex-batch --prio 15 map=standard,maxspeed,signals z=0-12 bbox=-180,-80,180,80'}
 
