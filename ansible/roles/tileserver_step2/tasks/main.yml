@@ -178,7 +178,7 @@
 
   - name: Deactivate default tileserver backend
     shell:
-      cmd: a2disconf rendered
+      cmd: a2disconf renderd
       chdir: /etc/apache2/conf-available
     notify:
       - systemd reload apache2

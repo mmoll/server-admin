@@ -76,7 +76,7 @@
       encoding: "utf-8"
       state: present
       owner: osmimport
-      tablespace: nvme
+      tablespace: "{{ 'nvme' if not tileserver.dev_setup | default(false) else omit }}"
 
   - name: Create database extension PostGIS and Hstore
     become: true
