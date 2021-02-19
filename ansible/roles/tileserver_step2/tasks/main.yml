@@ -96,6 +96,12 @@
       - systemd restart tirex-backend-manager
       - systemd restart tirex-master
 
+  - name: stop renderd service
+    systemd:
+      name: renderd
+      state: stopped
+      enabled: no
+
   - name: Create symlink from /var/lib/mod_tile to /var/lib/tirex/tiles
     file:
       src: /var/lib/tirex/tiles
@@ -170,12 +176,12 @@
       chdir: /var/www/tiles
       target: all
 
-#  - name: Deactivate default tileserver page
-#    shell:
-#      cmd: a2dissite tileserver_site.conf
-#      chdir: /etc/apache2/sites-available
-#    notify:
-#      - systemd reload apache2
+  - name: Deactivate default tileserver backend
+    shell:
+      cmd: a2disconf rendered
+      chdir: /etc/apache2/conf-available
+    notify:
+      - systemd reload apache2
 
   - name: Ensure that files included by Apache configuration are present
     when: "'letsencrypt' in group_names"
