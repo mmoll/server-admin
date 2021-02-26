@@ -38,6 +38,10 @@
         state: 'absent'
       - name: 'mpm_event'
         state: 'present'
+      - name: 'headers'
+        state: 'present'
+      - name: 'rewrite'
+        state: 'present'
     notify:
       - systemd restart apache2
 
