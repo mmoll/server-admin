@@ -45,6 +45,7 @@
       owner: root
       group: root
       state: directory
+    when: not tileserver.dev_setup
 
   - name: Clone Git repository of the API
     git:
@@ -53,6 +54,7 @@
       # We need to call it with force:yes because our database layout requires to overwrite config.json
       force: yes
       version: master
+    when: not tileserver.dev_setup
 
   - name: 'OpenRailwayMap API: Change database table prefix'
     lineinfile:
@@ -143,14 +145,14 @@
       privs: 'SELECT'
       database: '{{ osm_dbname }}'
 
-  - name: Change PostgreSQL version in the Systemd unit file of the API
-    lineinfile:
-      path: '{{ api_dir }}/orm-api.service'
-      regexp: '{{ item.regex }}'
-      line: '{{ item.replacement }}'
-    loop:
-      - {'regex': '^Requires=postgresql-9.6.service$', 'replacement': 'Requires=postgresql.service'}
-      - {'regex': '^After=postgresql-9.6.service$', 'replacement': 'After=postgresql.service'}
+#  - name: Change PostgreSQL version in the Systemd unit file of the API
+#    lineinfile:
+#      path: '{{ api_dir }}/orm-api.service'
+#      regexp: '{{ item.regex }}'
+#      line: '{{ item.replacement }}'
+#    loop:
+#      - {'regex': '^Requires=postgresql-9.6.service$', 'replacement': 'Requires=postgresql.service'}
+#      - {'regex': '^After=postgresql-9.6.service$', 'replacement': 'After=postgresql.service'}
 
   - name: Install Rsyslogd configuration for the API
     become: yes
