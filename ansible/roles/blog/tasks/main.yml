@@ -91,6 +91,13 @@
     notify:
       - systemd reload apache2
 
+  - name: Remove default vhost
+    file:
+      path: /etc/apache2/sites-enabled/000-default.conf
+      state: absent
+    notify:
+      - systemd reload apache2
+
   handlers:
     - name: systemd reload apache2
       systemd:
