@@ -16,8 +16,8 @@ ProxyPass /.well-known !
 {% endif %}
 
 ProxyPreserveHost On
-ProxyPass / http://localhost:9002/
-ProxyPassReverse / http://localhost:9002/
+ProxyPass / h2c://localhost:9002/
+ProxyPassReverse / h2c://localhost:9002/
 
 ErrorLog {{ apache2_logdir }}/api.openrailwaymap.org.error.log
 {% if 'letsencrypt' in group_names %}

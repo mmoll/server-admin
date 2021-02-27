@@ -42,6 +42,8 @@
         state: 'present'
       - name: 'rewrite'
         state: 'present'
+      - name: 'proxy_http2'
+        state: 'present'
     notify:
       - systemd restart apache2
 
