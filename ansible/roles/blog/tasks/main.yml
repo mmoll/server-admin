@@ -13,6 +13,7 @@
       owner: root
       group: root
       state: directory
+    when: not tileserver.dev_setup
 
   - name: Clone Git repository of the blog
     git:

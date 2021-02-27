@@ -107,6 +107,7 @@
       owner: openrailwaymap
       group: adm
       mode: 0750
+    when: not tileserver.dev_setup
 
   - debug: {msg: 'On Debian, the authentication method md5 is enabled for all users connecting from localhost via TCP/IP to any local database. Modify pg_hba.conf if your database is configured differently.'}
 
